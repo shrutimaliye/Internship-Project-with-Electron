@@ -55,23 +55,40 @@ const MACAddressInput = () => {
     setMacAddress(e.target.value);
   };
 
-  const startTracking = () => {
-    setIsLoading(true);
-    axios.post('http://localhost:8000/api/startTracking', { macAddress })
-      .then(response => {
-        setTrackStatus(response.data.message);
-        setIsTracking(true);
-        setIsLoading(false);
-      })
-      .catch((error) => {
-        console.log(error);
-        setIsLoading(false);
-      });
+  const startTracking = async () => {
+    try {
+          const response = await fetch('http://localhost:8000/api/check-mac', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ macAddress }),
+          });
+          console.log(response);
+          const data = await response.json();
+          if (data.found) {
+            setIsLoading(true);
+            await axios.post('http://localhost:8000/api/startTracking', { macAddress })
+              .then(response => {
+                setTrackStatus(response.data.message);
+                setIsTracking(true);
+                setIsLoading(false);
+              })
+              .catch((error) => {
+                console.log(error);
+                setIsLoading(false);
+              });
+          } else {
+            alert('MAC Address not found in the database');
+          }
+        } catch (error) {
+          alert('Error:', error);
+        }
   };
 
-  const stopTracking = () => {
+  const stopTracking = async () => {
     setIsLoading(true);
-    axios.post('http://localhost:8000/api/stopTracking')
+    await axios.post('http://localhost:8000/api/stopTracking')
       .then(response => {
         setTrackStatus(response.data.message);
         setIsTracking(false);
