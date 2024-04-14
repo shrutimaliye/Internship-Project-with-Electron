@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import axios from 'axios';
 import styled from 'styled-components';
 // const { ipcRenderer } = window.require('electron').remote;
 
@@ -46,42 +47,84 @@ const Button = styled.button`
 
 const MACAddressInput = () => {
   const [macAddress, setMacAddress] = useState('');
+  const [isTracking, setIsTracking] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const [trackStatus, setTrackStatus] = useState('');
+
+  const handleInputChange = (e) => {
+    setMacAddress(e.target.value);
+  };
+
+  const startTracking = () => {
+    setIsLoading(true);
+    axios.post('http://localhost:8000/api/startTracking', { macAddress })
+      .then(response => {
+        setTrackStatus(response.data.message);
+        setIsTracking(true);
+        setIsLoading(false);
+      })
+      .catch((error) => {
+        console.log(error);
+        setIsLoading(false);
+      });
+  };
+
+  const stopTracking = () => {
+    setIsLoading(true);
+    axios.post('http://localhost:8000/api/stopTracking')
+      .then(response => {
+        setTrackStatus(response.data.message);
+        setIsTracking(false);
+        setIsLoading(false);
+      })
+      .catch((error) => {
+        console.log(error);
+        setIsLoading(false);
+      });
+  };
+
+
 
   // const handleStartTracking = () => {
   //   // ipcRenderer.send('start-electron-app', macAddress);
   //   console.log("MAC Address Fetched successfully");
   // };
 
-  const handleStartTracking = async () => {
-    try {
-      const response = await fetch('http://localhost:8000/api/check-mac', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ macAddress }),
-      });
-      console.log(response);
-      const data = await response.json();
-      if (data.found) {
-        alert('MAC Address found in the database');
-      } else {
-        alert('MAC Address not found in the database');
-      }
-    } catch (error) {
-      alert('Error:', error);
-    }
-  };
-
-  const handleInputChange = (event) => {
-    setMacAddress(event.target.value);
-  };
+  // const handleStartTracking = async () => {
+  //   try {
+  //     const response = await fetch('http://localhost:8000/api/check-mac', {
+  //       method: 'POST',
+  //       headers: {
+  //         'Content-Type': 'application/json',
+  //       },
+  //       body: JSON.stringify({ macAddress }),
+  //     });
+  //     console.log(response);
+  //     const data = await response.json();
+  //     if (data.found) {
+  //       alert('MAC Address found in the database');
+  //     } else {
+  //       alert('MAC Address not found in the database');
+  //     }
+  //   } catch (error) {
+  //     alert('Error:', error);
+  //   }
+  // };
 
   return (
     <Container>
       <FormContainer>
           <Input type="text" value={macAddress} onChange={handleInputChange} placeholder="Enter MAC address" />
-          <Button onClick={handleStartTracking}> Start Time Tracking </Button>
+          {!isTracking ? (
+          <button onClick={startTracking}>Start Tracking</button>
+        ) : (
+          <button onClick={stopTracking}>Stop Tracking</button>
+        )}
+         {isLoading ? (
+        <p>Loading...</p>
+      ) : (
+        <p>{trackStatus}</p>
+      )}
       </FormContainer>
     </Container>
   );
