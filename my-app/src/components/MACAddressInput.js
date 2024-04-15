@@ -28,7 +28,9 @@ const Input = styled.input`
 `;
 
 const Button = styled.button`
-  width: 100%;
+  width: 50%;
+  text-align: center;
+  margin-left: 100px;
   padding: 10px;
   background-color: #007bff;
   color: #fff;
@@ -44,6 +46,8 @@ const Button = styled.button`
 
 const TableContainer = styled.div`
   margin-top: 20px;
+  max-height: 70vh; /* Limit the height of the table container */
+  overflow-y: auto; /* Add vertical scroll for overflow */
 `;
 
 const Table = styled.table`
@@ -55,18 +59,17 @@ const Th = styled.th`
   border: 1px solid #ddd;
   padding: 8px;
   background-color: #f2f2f2;
-  color: red;
+  color: #333;
 `;
 
 const Td = styled.td`
   border: 1px solid #ddd;
   padding: 8px;
-  color: yellow;
 `;
 
 const NoData = styled.div`
   margin-top: 10px;
-  color: green;
+  color: #555;
 `;
 
 const MACAddressInput = () => {
