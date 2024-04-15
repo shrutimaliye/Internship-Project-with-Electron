@@ -1,8 +1,11 @@
 const { getMACAddress } = require('../models/macadd');
+const { MongoClient } = require('mongodb');
 const AppUsage = require('../models/appUsage');
 const path = require('path')
 const { spawn } = require('child_process');
 let trackingProcess;
+
+const MONGODB_URI = "mongodb+srv://manav2031:Ma310703@cluster0.8n47utm.mongodb.net/";
 
 exports.checkMACAddress = async (req, res) => {
   const { macAddress } = req.body;
@@ -21,6 +24,7 @@ exports.checkMACAddress = async (req, res) => {
 
 exports.startTracking = async (req, res) => {
   const { macAddress } = req.body;
+  console.log(macAddress);
   if (trackingProcess) {
     return res.status(400).json({ message: 'Tracking already active' });
   }
@@ -80,6 +84,30 @@ exports.stopTracking = async (req, res) => {
   }, 5000); // 5 seconds timeout
 
   console.log('Stopping tracking...');
+};
+
+exports.getTracking = async (req, res) => {
+  console.log(req.body);
+  const {macAddress} = req.body;
+  console.log(macAddress);
+  const client = new MongoClient(MONGODB_URI);
+  try {
+    await client.connect();
+
+    const database = client.db(macAddress);
+    const collection = database.collection('application_usage');
+
+    // Fetch data
+    const data = await collection.find().toArray();
+    console.log(data)
+    res.json(data);
+  } catch (error) {
+    console.error('Error:', error);
+    res.status(500).json({ message: 'Internal Server Error' });
+  } finally {
+    // Close the database connection
+    await client.close();
+  }
 };
 
 
