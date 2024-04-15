@@ -133,9 +133,9 @@ const MACAddressInput = () => {
       <FormContainer>
           <Input type="text" value={macAddress} onChange={handleInputChange} placeholder="Enter MAC address" />
           {!isTracking ? (
-          <button onClick={startTracking}>Start Tracking</button>
+          <Button onClick={startTracking}>Start Tracking</Button>
         ) : (
-          <button onClick={stopTracking}>Stop Tracking</button>
+          <Button onClick={stopTracking}>Stop Tracking</Button>
         )}
          {isLoading ? (
         <p>Loading...</p>
