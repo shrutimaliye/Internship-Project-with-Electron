@@ -1,10 +1,6 @@
-
-
-import React, { useState } from 'react';
+import React from 'react';
 import styled from 'styled-components';
-import Logo from '../components/Logo';
-import Button from './Button';
-import MACAddressInput from './MACAddressInput';
+import Logo from '../parts/Logo';
 
 const Section = styled.section`
   width: 100vw;
@@ -18,7 +14,7 @@ const NavBar = styled.nav`
   background-color: #968df0;
   width: 75%;
   padding: 0 12.5%;
-  height: ${props => props.theme.navHeight};
+  height: 10%;
   margin: 0 auto;
 `;
 
@@ -48,7 +44,6 @@ const MenuItem = styled.li`
 `;
 
 const Navigation = () => {
-  const [showMACAddressInput, setShowMACAddressInput] = useState(false);
 
   const scrollTo = id => {
     let element = document.getElementById(id);
@@ -59,9 +54,6 @@ const Navigation = () => {
     });
   };
 
-  const toggleMACAddressInput = () => {
-    setShowMACAddressInput(!showMACAddressInput);
-  };
 
   return (
     <Section id="navigation">
@@ -70,14 +62,10 @@ const Navigation = () => {
         <Menu>
           <MenuItem onClick={() => scrollTo('home')}>Home</MenuItem>
           <MenuItem onClick={() => scrollTo('about')}>About</MenuItem>
-          <MenuItem onClick={() => scrollTo('roadmap')}>Roadmap</MenuItem>
-          <MenuItem onClick={() => scrollTo('showcase')}>Showcase</MenuItem>
           <MenuItem onClick={() => scrollTo('team')}>Team</MenuItem>
-          <MenuItem onClick={() => scrollTo('faq')}>Faq</MenuItem>
+
         </Menu>
-        <Button text="Get Started" onClick={toggleMACAddressInput} />
       </NavBar>
-      {showMACAddressInput && <MACAddressInput id="macAddressInput" />}
     </Section>
   );
 };

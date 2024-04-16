@@ -1,34 +1,22 @@
-import { ThemeProvider } from "styled-components";
-import GlobalStyles from "./styles/GlobalStyle";
-import { light } from "./styles/Theme";
-import About from "./components/sections/About";
-import Showcase from "./components/sections/Showcase";
-import Faq from "./components/sections/Faq";
-import Footer from "./components/Footer";
-import Navigation from "./components/Navigation";
-import Home from "./components/sections/Home";
-import Roadmap from "./components/sections/Roadmap";
-import Team from "./components/sections/Team";
-import ScrollToTop from "./components/ScrollToTop"
-
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import './App.css';
+import Admin from './components/Admin';
+import Home from './components/Home';
+import Userlogin from './components/Userlogin';
+import AdminLogin from './components/AdminLogin';
+import MACAddressInput from './components/MACAddressInput';
 
 function App() {
   return (
-    <>
-    <GlobalStyles/>
-    <ThemeProvider theme={light}>
-    <Navigation />
-    <Home/>
-    <About/>
-    <Roadmap/>
-    <Showcase/>
-    <Team/>
-    <Faq/>
-    <Footer/>
-    <ScrollToTop/>
-    </ThemeProvider>
-      
-    </>
+    <Router>
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/Admin" element={<Admin />} />
+        <Route path="/AdminLogin" element={<AdminLogin />} />
+        <Route path="/Userlogin" element={<Userlogin />} />
+        <Route path="/MACAddressInput" element={< MACAddressInput/>}></Route>
+      </Routes>
+    </Router>
   );
 }
 
