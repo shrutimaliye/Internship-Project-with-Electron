@@ -15,7 +15,7 @@ def get_running_processes():
   return running_processes
 
 def track_application_usage(mac_address):
-  db = client[mac_address.replace(':', '_')]  # Replace ':' in MAC address to avoid collection naming issues
+  db = client[mac_address]
   collection = db.application_usage
   
   while True:

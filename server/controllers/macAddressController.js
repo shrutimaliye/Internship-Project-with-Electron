@@ -95,14 +95,10 @@ exports.getTracking = async (req, res) => {
     await client.connect();
 
     const database = client.db(macAddress);
-    console.log("DATABASE");
-    console.log(database);
     const collection = database.collection('application_usage');
-    console.log("COLLECTION");
-    console.log(collection);
 
     // Fetch data
-    const data = await collection.find().exec();
+    const data = await collection.find().toArray();
     console.log(data)
     res.json(data);
   } catch (error) {
