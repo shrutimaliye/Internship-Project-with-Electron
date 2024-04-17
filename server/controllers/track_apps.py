@@ -5,7 +5,7 @@ from pymongo import MongoClient
 import sys
 
 # MongoDB connection (replace with your credentials)
-mongo_url = 'mongodb+srv://manav2031:Ma310703@cluster0.8n47utm.mongodb.net/internship_project'
+mongo_url = 'mongodb+srv://shrutiM:ElectronP1@cluster0.j2psvez.mongodb.net/Internship_Project'
 client = MongoClient(mongo_url)
 
 def get_running_processes():
